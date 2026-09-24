@@ -1,0 +1,42 @@
+[
+  {
+    "target_id": "vulhub_cwe_78_thinkphp5_rce",
+    "cwe": "CWE-78_Command_Injection",
+    "docker_path": "thinkphp/5.0.23-rce",
+    "port": 8080,
+    "default_endpoint": "/index.php?s=captcha",
+    "description": "ThinkPHP 5.0.23 Remote Code Execution via parameter injection"
+  },
+  {
+    "target_id": "vulhub_cwe_89_sqli_graphql",
+    "cwe": "CWE-89_SQL_Injection",
+    "docker_path": "ghost/cve-2023-40028",
+    "port": 2368,
+    "default_endpoint": "/ghost/api/v3/admin/",
+    "description": "SQL injection vulnerability in database interface"
+  },
+  {
+    "target_id": "vulhub_cwe_918_ssrf_redis",
+    "cwe": "CWE-918_SSRF",
+    "docker_path": "weblogic/ssrf",
+    "port": 7001,
+    "default_endpoint": "/uddiexplorer/SearchPublicRegistries.jsp",
+    "description": "WebLogic arbitrary internal request dispatch"
+  },
+  {
+    "target_id": "vulhub_cwe_79_xss_reflected",
+    "cwe": "CWE-79_XSS",
+    "docker_path": "discuz/x3.4-xss",
+    "port": 80,
+    "default_endpoint": "/forum.php",
+    "description": "Reflected cross-site script evaluation"
+  },
+  {
+    "target_id": "vulhub_cwe_22_path_traversal",
+    "cwe": "CWE-22_Path_Traversal",
+    "docker_path": "httpd/CVE-2021-41773",
+    "port": 80,
+    "default_endpoint": "/cgi-bin/.%2e/.%2e/.%2e/.%2e/etc/passwd",
+    "description": "Apache HTTP Server Path Traversal and RCE"
+  }
+]
