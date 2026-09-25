@@ -1,42 +1,672 @@
 [
   {
-    "target_id": "vulhub_cwe_78_thinkphp5_rce",
+    "id": "vulhub_01",
+    "name": "Thinkphp 5.0.23-Rce",
     "cwe": "CWE-78_Command_Injection",
-    "docker_path": "thinkphp/5.0.23-rce",
+    "compose_path": "vulhub/thinkphp/5.0.23-rce",
     "port": 8080,
-    "default_endpoint": "/index.php?s=captcha",
-    "description": "ThinkPHP 5.0.23 Remote Code Execution via parameter injection"
+    "path": "/index.php?s=captcha",
+    "method": "POST",
+    "param": "_method"
   },
   {
-    "target_id": "vulhub_cwe_89_sqli_graphql",
+    "id": "vulhub_02",
+    "name": "Thinkphp In-Sqli",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/thinkphp/in-sqli",
+    "port": 8080,
+    "path": "/index.php?ids=1",
+    "method": "GET",
+    "param": "ids"
+  },
+  {
+    "id": "vulhub_03",
+    "name": "Httpd Cve-2021-41773",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/httpd/CVE-2021-41773",
+    "port": 8080,
+    "path": "/cgi-bin/.%2e/%2e%2e/%2e%2e/bin/sh",
+    "method": "POST",
+    "param": "cmd"
+  },
+  {
+    "id": "vulhub_04",
+    "name": "Bash Shellshock",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/bash/shellshock",
+    "port": 8080,
+    "path": "/victim.cgi",
+    "method": "GET",
+    "param": "User-Agent"
+  },
+  {
+    "id": "vulhub_05",
+    "name": "Struts2 S2-045",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/struts2/s2-045",
+    "port": 8080,
+    "path": "/orders.action",
+    "method": "POST",
+    "param": "Content-Type"
+  },
+  {
+    "id": "vulhub_06",
+    "name": "Struts2 S2-052",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/struts2/s2-052",
+    "port": 8080,
+    "path": "/orders/3/edit",
+    "method": "POST",
+    "param": "xml"
+  },
+  {
+    "id": "vulhub_07",
+    "name": "Struts2 S2-057",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/struts2/s2-057",
+    "port": 8080,
+    "path": "/actionChain1.action",
+    "method": "GET",
+    "param": "redirect"
+  },
+  {
+    "id": "vulhub_08",
+    "name": "Spring Cve-2022-22947",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/spring/CVE-2022-22947",
+    "port": 8080,
+    "path": "/actuator/gateway/routes",
+    "method": "POST",
+    "param": "filter"
+  },
+  {
+    "id": "vulhub_09",
+    "name": "Spring Cve-2022-22965",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/spring/CVE-2022-22965",
+    "port": 8080,
+    "path": "/helloworld/greeting",
+    "method": "POST",
+    "param": "class"
+  },
+  {
+    "id": "vulhub_10",
+    "name": "Log4J Cve-2021-44228",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/log4j/CVE-2021-44228",
+    "port": 8983,
+    "path": "/solr/admin/cores",
+    "method": "GET",
+    "param": "action"
+  },
+  {
+    "id": "vulhub_11",
+    "name": "Gitlab Cve-2021-22205",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/gitlab/CVE-2021-22205",
+    "port": 8080,
+    "path": "/uploads/user",
+    "method": "POST",
+    "param": "file"
+  },
+  {
+    "id": "vulhub_12",
+    "name": "Node Cve-2017-14849",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/node/CVE-2017-14849",
+    "port": 8080,
+    "path": "/static/../../../etc/passwd",
+    "method": "GET",
+    "param": "path"
+  },
+  {
+    "id": "vulhub_13",
+    "name": "Confluence Cve-2021-26084",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/confluence/CVE-2021-26084",
+    "port": 8090,
+    "path": "/pages/createpage-entervariables.action",
+    "method": "POST",
+    "param": "queryString"
+  },
+  {
+    "id": "vulhub_14",
+    "name": "Confluence Cve-2022-26134",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/confluence/CVE-2022-26134",
+    "port": 8090,
+    "path": "/%24%7B%40print%281337%29%7D/",
+    "method": "GET",
+    "param": "uri"
+  },
+  {
+    "id": "vulhub_15",
+    "name": "Shiro Cve-2016-4437",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/shiro/CVE-2016-4437",
+    "port": 8080,
+    "path": "/login",
+    "method": "POST",
+    "param": "rememberMe"
+  },
+  {
+    "id": "vulhub_16",
+    "name": "Php Cve-2019-11043",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/php/CVE-2019-11043",
+    "port": 8080,
+    "path": "/index.php",
+    "method": "GET",
+    "param": "path"
+  },
+  {
+    "id": "vulhub_17",
+    "name": "Fpm Cve-2019-11043",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/fpm/CVE-2019-11043",
+    "port": 8080,
+    "path": "/index.php",
+    "method": "GET",
+    "param": "query"
+  },
+  {
+    "id": "vulhub_18",
+    "name": "Nginx Cve-2017-7529",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/nginx/CVE-2017-7529",
+    "port": 8080,
+    "path": "/proxy",
+    "method": "GET",
+    "param": "Range"
+  },
+  {
+    "id": "vulhub_19",
+    "name": "Saltstack Cve-2020-16846",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/saltstack/CVE-2020-16846",
+    "port": 8000,
+    "path": "/run",
+    "method": "POST",
+    "param": "params"
+  },
+  {
+    "id": "vulhub_20",
+    "name": "Drupal Cve-2018-7600",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/drupal/CVE-2018-7600",
+    "port": 8080,
+    "path": "/user/register",
+    "method": "POST",
+    "param": "mail"
+  },
+  {
+    "id": "vulhub_21",
+    "name": "Drupal Cve-2019-6340",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/drupal/CVE-2019-6340",
+    "port": 8080,
+    "path": "/node/1",
+    "method": "POST",
+    "param": "hal_json"
+  },
+  {
+    "id": "vulhub_22",
+    "name": "Supervisor Cve-2017-11610",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/supervisor/CVE-2017-11610",
+    "port": 9001,
+    "path": "/RPC2",
+    "method": "POST",
+    "param": "methodCall"
+  },
+  {
+    "id": "vulhub_23",
+    "name": "Activemq Cve-2015-5254",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/activemq/CVE-2015-5254",
+    "port": 8161,
+    "path": "/admin/browse.jsp",
+    "method": "POST",
+    "param": "secret"
+  },
+  {
+    "id": "vulhub_24",
+    "name": "Fastjson 1.2.24-Rce",
+    "cwe": "CWE-78_Command_Injection",
+    "compose_path": "vulhub/fastjson/1.2.24-rce",
+    "port": 8080,
+    "path": "/",
+    "method": "POST",
+    "param": "json"
+  },
+  {
+    "id": "vulhub_25",
+    "name": "Ghost Cve-2023-40028",
     "cwe": "CWE-89_SQL_Injection",
-    "docker_path": "ghost/cve-2023-40028",
+    "compose_path": "vulhub/ghost/cve-2023-40028",
     "port": 2368,
-    "default_endpoint": "/ghost/api/v3/admin/",
-    "description": "SQL injection vulnerability in database interface"
+    "path": "/ghost/api/v3/admin/posts/",
+    "method": "GET",
+    "param": "filter"
   },
   {
-    "target_id": "vulhub_cwe_918_ssrf_redis",
-    "cwe": "CWE-918_SSRF",
-    "docker_path": "weblogic/ssrf",
-    "port": 7001,
-    "default_endpoint": "/uddiexplorer/SearchPublicRegistries.jsp",
-    "description": "WebLogic arbitrary internal request dispatch"
+    "id": "vulhub_26",
+    "name": "Discuz Wooyun-2010-080723",
+    "cwe": "CWE-89_SQL_Injection",
+    "compose_path": "vulhub/discuz/wooyun-2010-080723",
+    "port": 8080,
+    "path": "/viewthread.php",
+    "method": "GET",
+    "param": "tid"
   },
   {
-    "target_id": "vulhub_cwe_79_xss_reflected",
-    "cwe": "CWE-79_XSS",
-    "docker_path": "discuz/x3.4-xss",
-    "port": 80,
-    "default_endpoint": "/forum.php",
-    "description": "Reflected cross-site script evaluation"
+    "id": "vulhub_27",
+    "name": "Joomla Cve-2015-8562",
+    "cwe": "CWE-89_SQL_Injection",
+    "compose_path": "vulhub/joomla/CVE-2015-8562",
+    "port": 8080,
+    "path": "/index.php",
+    "method": "GET",
+    "param": "X-Forwarded-For"
   },
   {
-    "target_id": "vulhub_cwe_22_path_traversal",
+    "id": "vulhub_28",
+    "name": "Opencart Sqli",
+    "cwe": "CWE-89_SQL_Injection",
+    "compose_path": "vulhub/opencart/sqli",
+    "port": 8080,
+    "path": "/index.php?route=product/search",
+    "method": "GET",
+    "param": "search"
+  },
+  {
+    "id": "vulhub_29",
+    "name": "Wordpress Cve-2022-21661",
+    "cwe": "CWE-89_SQL_Injection",
+    "compose_path": "vulhub/wordpress/CVE-2022-21661",
+    "port": 8080,
+    "path": "/wp-admin/admin-ajax.php",
+    "method": "POST",
+    "param": "query"
+  },
+  {
+    "id": "vulhub_30",
+    "name": "Nexus Cve-2020-10199",
+    "cwe": "CWE-89_SQL_Injection",
+    "compose_path": "vulhub/nexus/CVE-2020-10199",
+    "port": 8081,
+    "path": "/service/rest/beta/script",
+    "method": "POST",
+    "param": "content"
+  },
+  {
+    "id": "vulhub_31",
+    "name": "Redmine Cve-2019-11503",
+    "cwe": "CWE-89_SQL_Injection",
+    "compose_path": "vulhub/redmine/CVE-2019-11503",
+    "port": 3000,
+    "path": "/projects",
+    "method": "GET",
+    "param": "sort"
+  },
+  {
+    "id": "vulhub_32",
+    "name": "Metabase Cve-2021-41277",
+    "cwe": "CWE-89_SQL_Injection",
+    "compose_path": "vulhub/metabase/CVE-2021-41277",
+    "port": 3000,
+    "path": "/api/geojson",
+    "method": "GET",
+    "param": "url"
+  },
+  {
+    "id": "vulhub_33",
+    "name": "Cacti Cve-2022-46169",
+    "cwe": "CWE-89_SQL_Injection",
+    "compose_path": "vulhub/cacti/CVE-2022-46169",
+    "port": 8080,
+    "path": "/remote_agent.php",
+    "method": "GET",
+    "param": "poller_id"
+  },
+  {
+    "id": "vulhub_34",
+    "name": "Rails Cve-2019-5418",
+    "cwe": "CWE-89_SQL_Injection",
+    "compose_path": "vulhub/rails/CVE-2019-5418",
+    "port": 3000,
+    "path": "/robots",
+    "method": "GET",
+    "param": "Accept"
+  },
+  {
+    "id": "vulhub_35",
+    "name": "Ecshop Xianzhi-2018-09-58474245",
+    "cwe": "CWE-89_SQL_Injection",
+    "compose_path": "vulhub/ecshop/xianzhi-2018-09-58474245",
+    "port": 8080,
+    "path": "/user.php",
+    "method": "POST",
+    "param": "login"
+  },
+  {
+    "id": "vulhub_36",
+    "name": "Discuz X3.4-Sqli",
+    "cwe": "CWE-89_SQL_Injection",
+    "compose_path": "vulhub/discuz/x3.4-sqli",
+    "port": 8080,
+    "path": "/forum.php",
+    "method": "GET",
+    "param": "gid"
+  },
+  {
+    "id": "vulhub_37",
+    "name": "Prestashop Cve-2022-31181",
+    "cwe": "CWE-89_SQL_Injection",
+    "compose_path": "vulhub/prestashop/CVE-2022-31181",
+    "port": 8080,
+    "path": "/index.php",
+    "method": "GET",
+    "param": "id_product"
+  },
+  {
+    "id": "vulhub_38",
+    "name": "Thinkphp 5.0.10-Sqli",
+    "cwe": "CWE-89_SQL_Injection",
+    "compose_path": "vulhub/thinkphp/5.0.10-sqli",
+    "port": 8080,
+    "path": "/index.php?ids=1",
+    "method": "GET",
+    "param": "ids"
+  },
+  {
+    "id": "vulhub_39",
+    "name": "Httpd Cve-2021-41773-Traversal",
     "cwe": "CWE-22_Path_Traversal",
-    "docker_path": "httpd/CVE-2021-41773",
-    "port": 80,
-    "default_endpoint": "/cgi-bin/.%2e/.%2e/.%2e/.%2e/etc/passwd",
-    "description": "Apache HTTP Server Path Traversal and RCE"
+    "compose_path": "vulhub/httpd/CVE-2021-41773-traversal",
+    "port": 8080,
+    "path": "/icons/.%2e/%2e%2e/%2e%2e/etc/passwd",
+    "method": "GET",
+    "param": "path"
+  },
+  {
+    "id": "vulhub_40",
+    "name": "Httpd Cve-2021-42013",
+    "cwe": "CWE-22_Path_Traversal",
+    "compose_path": "vulhub/httpd/CVE-2021-42013",
+    "port": 8080,
+    "path": "/icons/.%%32%65/.%%32%65/etc/passwd",
+    "method": "GET",
+    "param": "path"
+  },
+  {
+    "id": "vulhub_41",
+    "name": "Nginx Insecure-Configuration",
+    "cwe": "CWE-22_Path_Traversal",
+    "compose_path": "vulhub/nginx/insecure-configuration",
+    "port": 8080,
+    "path": "/files../etc/passwd",
+    "method": "GET",
+    "param": "path"
+  },
+  {
+    "id": "vulhub_42",
+    "name": "Tomcat Cve-2017-12615",
+    "cwe": "CWE-22_Path_Traversal",
+    "compose_path": "vulhub/tomcat/CVE-2017-12615",
+    "port": 8080,
+    "path": "/test.jsp/",
+    "method": "GET",
+    "param": "file"
+  },
+  {
+    "id": "vulhub_43",
+    "name": "Weblogic Cve-2018-2894",
+    "cwe": "CWE-22_Path_Traversal",
+    "compose_path": "vulhub/weblogic/CVE-2018-2894",
+    "port": 7001,
+    "path": "/ws_utc/config.do",
+    "method": "GET",
+    "param": "file"
+  },
+  {
+    "id": "vulhub_44",
+    "name": "Jenkins Cve-2018-1000861",
+    "cwe": "CWE-22_Path_Traversal",
+    "compose_path": "vulhub/jenkins/CVE-2018-1000861",
+    "port": 8080,
+    "path": "/securityRealm/user/admin/descriptorByName/",
+    "method": "GET",
+    "param": "value"
+  },
+  {
+    "id": "vulhub_45",
+    "name": "Wiremock Cve-2022-25845",
+    "cwe": "CWE-22_Path_Traversal",
+    "compose_path": "vulhub/wiremock/CVE-2022-25845",
+    "port": 8080,
+    "path": "/__admin/files/../../../etc/passwd",
+    "method": "GET",
+    "param": "path"
+  },
+  {
+    "id": "vulhub_46",
+    "name": "Apache Solr-Cve-2019-17558",
+    "cwe": "CWE-22_Path_Traversal",
+    "compose_path": "vulhub/apache/solr-cve-2019-17558",
+    "port": 8983,
+    "path": "/solr/select",
+    "method": "GET",
+    "param": "q"
+  },
+  {
+    "id": "vulhub_47",
+    "name": "Grafana Cve-2021-43798",
+    "cwe": "CWE-22_Path_Traversal",
+    "compose_path": "vulhub/grafana/CVE-2021-43798",
+    "port": 3000,
+    "path": "/public/plugins/alertlist/../../../../../../etc/passwd",
+    "method": "GET",
+    "param": "path"
+  },
+  {
+    "id": "vulhub_48",
+    "name": "Minio Cve-2021-21287",
+    "cwe": "CWE-22_Path_Traversal",
+    "compose_path": "vulhub/minio/CVE-2021-21287",
+    "port": 9000,
+    "path": "/minio/bootstrap",
+    "method": "POST",
+    "param": "target"
+  },
+  {
+    "id": "vulhub_49",
+    "name": "Weblogic Ssrf",
+    "cwe": "CWE-918_SSRF",
+    "compose_path": "vulhub/weblogic/ssrf",
+    "port": 7001,
+    "path": "/uddiexplorer/SearchPublicRegistries.jsp",
+    "method": "GET",
+    "param": "rdoSearch"
+  },
+  {
+    "id": "vulhub_50",
+    "name": "Redis Ssrf",
+    "cwe": "CWE-918_SSRF",
+    "compose_path": "vulhub/redis/ssrf",
+    "port": 6379,
+    "path": "/dict",
+    "method": "GET",
+    "param": "cmd"
+  },
+  {
+    "id": "vulhub_51",
+    "name": "Discuz X3.4-Ssrf",
+    "cwe": "CWE-918_SSRF",
+    "compose_path": "vulhub/discuz/x3.4-ssrf",
+    "port": 8080,
+    "path": "/forum.php?mod=ajax&action=downremoteimg",
+    "method": "POST",
+    "param": "message"
+  },
+  {
+    "id": "vulhub_52",
+    "name": "Wordpress Cve-2017-5487",
+    "cwe": "CWE-918_SSRF",
+    "compose_path": "vulhub/wordpress/CVE-2017-5487",
+    "port": 8080,
+    "path": "/wp-json/wp/v2/users",
+    "method": "GET",
+    "param": "url"
+  },
+  {
+    "id": "vulhub_53",
+    "name": "Elasticsearch Cve-2015-1427",
+    "cwe": "CWE-918_SSRF",
+    "compose_path": "vulhub/elasticsearch/CVE-2015-1427",
+    "port": 9200,
+    "path": "/_search",
+    "method": "POST",
+    "param": "source"
+  },
+  {
+    "id": "vulhub_54",
+    "name": "Couchdb Cve-2017-12635",
+    "cwe": "CWE-918_SSRF",
+    "compose_path": "vulhub/couchdb/CVE-2017-12635",
+    "port": 5984,
+    "path": "/_users/org.couchdb.user:admin",
+    "method": "PUT",
+    "param": "roles"
+  },
+  {
+    "id": "vulhub_55",
+    "name": "Confluence Cve-2019-3396",
+    "cwe": "CWE-918_SSRF",
+    "compose_path": "vulhub/confluence/CVE-2019-3396",
+    "port": 8090,
+    "path": "/rest/tinymce/1/macro/preview",
+    "method": "POST",
+    "param": "url"
+  },
+  {
+    "id": "vulhub_56",
+    "name": "Gitlab Cve-2020-10977",
+    "cwe": "CWE-918_SSRF",
+    "compose_path": "vulhub/gitlab/CVE-2020-10977",
+    "port": 8080,
+    "path": "/projects/issue",
+    "method": "POST",
+    "param": "description"
+  },
+  {
+    "id": "vulhub_57",
+    "name": "Discuz X3.4-Xss",
+    "cwe": "CWE-79_XSS",
+    "compose_path": "vulhub/discuz/x3.4-xss",
+    "port": 8080,
+    "path": "/viewthread.php",
+    "method": "GET",
+    "param": "tid"
+  },
+  {
+    "id": "vulhub_58",
+    "name": "Phpmyadmin Cve-2018-12613",
+    "cwe": "CWE-79_XSS",
+    "compose_path": "vulhub/phpmyadmin/CVE-2018-12613",
+    "port": 8080,
+    "path": "/index.php",
+    "method": "GET",
+    "param": "target"
+  },
+  {
+    "id": "vulhub_59",
+    "name": "Spring Cve-2022-22978",
+    "cwe": "CWE-79_XSS",
+    "compose_path": "vulhub/spring/CVE-2022-22978",
+    "port": 8080,
+    "path": "/admin/.*",
+    "method": "GET",
+    "param": "uri"
+  },
+  {
+    "id": "vulhub_60",
+    "name": "Joomla Cve-2017-8917",
+    "cwe": "CWE-79_XSS",
+    "compose_path": "vulhub/joomla/CVE-2017-8917",
+    "port": 8080,
+    "path": "/index.php",
+    "method": "GET",
+    "param": "list[fullordering]"
+  },
+  {
+    "id": "vulhub_61",
+    "name": "Drupal Cve-2014-3704",
+    "cwe": "CWE-79_XSS",
+    "compose_path": "vulhub/drupal/CVE-2014-3704",
+    "port": 8080,
+    "path": "/?q=node",
+    "method": "POST",
+    "param": "name"
+  },
+  {
+    "id": "vulhub_62",
+    "name": "Gitea Cve-2022-30781",
+    "cwe": "CWE-79_XSS",
+    "compose_path": "vulhub/gitea/CVE-2022-30781",
+    "port": 3000,
+    "path": "/user/login",
+    "method": "POST",
+    "param": "user"
+  },
+  {
+    "id": "vulhub_63",
+    "name": "Struts2 S2-001",
+    "cwe": "CWE-79_XSS",
+    "compose_path": "vulhub/struts2/s2-001",
+    "port": 8080,
+    "path": "/login.action",
+    "method": "POST",
+    "param": "username"
+  },
+  {
+    "id": "vulhub_64",
+    "name": "Thinkphp 2.1-Rce",
+    "cwe": "CWE-79_XSS",
+    "compose_path": "vulhub/thinkphp/2.1-rce",
+    "port": 8080,
+    "path": "/index.php",
+    "method": "GET",
+    "param": "s"
+  },
+  {
+    "id": "vulhub_65",
+    "name": "Flask Ssti",
+    "cwe": "CWE-79_XSS",
+    "compose_path": "vulhub/flask/ssti",
+    "port": 5000,
+    "path": "/search",
+    "method": "GET",
+    "param": "q"
+  },
+  {
+    "id": "vulhub_66",
+    "name": "Express Prototype-Pollution",
+    "cwe": "CWE-79_XSS",
+    "compose_path": "vulhub/express/prototype-pollution",
+    "port": 3000,
+    "path": "/api/profile",
+    "method": "POST",
+    "param": "settings"
+  },
+  {
+    "id": "vulhub_67",
+    "name": "Zabbix Cve-2022-23131",
+    "cwe": "CWE-79_XSS",
+    "compose_path": "vulhub/zabbix/CVE-2022-23131",
+    "port": 8080,
+    "path": "/index_sso.php",
+    "method": "GET",
+    "param": "zbx_session"
   }
 ]
