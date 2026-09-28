@@ -1,0 +1,32 @@
+[
+  {
+    "framework": "AutoPenBench (evaluator.py)",
+    "tp": 67,
+    "fp": 67,
+    "tn": 0,
+    "fn": 0,
+    "precision": "50.0%",
+    "recall": "100.0%",
+    "f1": "66.7%"
+  },
+  {
+    "framework": "PentestGPT (legacy parser)",
+    "tp": 67,
+    "fp": 67,
+    "tn": 0,
+    "fn": 0,
+    "precision": "50.0%",
+    "recall": "100.0%",
+    "f1": "66.7%"
+  },
+  {
+    "framework": "VeriPen (Invariant Oracles)",
+    "tp": 24,
+    "fp": 0,
+    "tn": 67,
+    "fn": 43,
+    "precision": "100.0%",
+    "recall": "35.8%",
+    "f1": "52.7%"
+  }
+]
