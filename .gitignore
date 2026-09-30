@@ -12,3 +12,8 @@ logs/*
 test_results/
 .playwright/
 test-results/
+
+# Added 2026-09-30
+venv_linux/
+vulhub/
+experiments/results/*.jsonl

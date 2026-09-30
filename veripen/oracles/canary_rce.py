@@ -1,7 +1,7 @@
 import secrets
 import re
 import httpx
-from typing import Tuple
+from typing import Tuple, Dict, Optional
 from veripen.oracles.base_oracle import BaseOracle
 from veripen.core.schemas import (
     ExploitClaim,
@@ -11,103 +11,247 @@ from veripen.core.schemas import (
     InjectionPoint
 )
 
+
+# Nonce bit-length. Must be >= 32 for the soundness bound in Proposition 1.
+# N = 48 gives epsilon ~= 3.55e-10 per probe (L = 1e5 bytes).
+NONCE_BITS = 48
+NONCE_MIN = 1 << (NONCE_BITS - 1)      # 2^47
+NONCE_MAX = (1 << NONCE_BITS) - 1      # 2^48 - 1
+
+
 class CanaryRCEOracle(BaseOracle):
     """
     Deterministic Verification Oracle for Remote Code Execution / Command Injection.
     Eliminates echo-hallucinations via dynamic arithmetic and nonce challenges.
+
+    Decision logic (matches Proposition 1 of the thesis formal model):
+      - VERIFIED      if str(S) appears as a standalone token in the response
+      - ECHO_ONLY     if X or Y appears but S does not (reflection, no execution)
+      - ABSENT        otherwise (no proof, no reflection)
     """
 
     def __init__(self, timeout_seconds: float = 8.0):
         super().__init__(oracle_name="CanaryRCEOracle", timeout_seconds=timeout_seconds)
 
+    # ------------------------------------------------------------------ #
+    # Nonce generation (Assumption A1: CSPRNG, uniform over [2^47, 2^48))
+    # ------------------------------------------------------------------ #
     def _generate_arithmetic_challenge(self) -> Tuple[int, int, int]:
-        val1 = secrets.randbelow(89999) + 10000
-        val2 = secrets.randbelow(89999) + 10000
+        # secrets.randbelow is rejection-sampled -> no modulo bias.
+        span = NONCE_MAX - NONCE_MIN + 1
+        val1 = NONCE_MIN + secrets.randbelow(span)
+        val2 = NONCE_MIN + secrets.randbelow(span)
         return val1, val2, val1 + val2
 
+    # ------------------------------------------------------------------ #
+    # Payload synthesis
+    # ------------------------------------------------------------------ #
     def _synthesize_canary_payload(self, base_payload: str, val1: int, val2: int) -> str:
         proof_cmd = f"expr {val1} + {val2}"
+
+        # Case A: explicit placeholder in the template
+        if "{CMD}" in base_payload:
+            return base_payload.replace("{CMD}", proof_cmd)
+
+        # Case B: template ends with "=" -- the sink is the last field value.
+        # This is the ThinkPHP-style primitive:
+        #   __construct&filter[]=system&method=get&server[REQUEST_METHOD]=<CMD>
+        if base_payload.endswith("="):
+            return f"{base_payload}{proof_cmd}"
+
+        # Case C: shell-style concatenation (simple command injection)
         if ";" in base_payload:
-            return f"; {proof_cmd};"
+            return f"{base_payload}; {proof_cmd}"
         elif "&&" in base_payload:
-            return f" && {proof_cmd}"
+            return f"{base_payload} && {proof_cmd}"
         elif "|" in base_payload:
-            return f" | {proof_cmd}"
+            return f"{base_payload} | {proof_cmd}"
         elif "$(" in base_payload or "`" in base_payload:
             return f"$({proof_cmd})"
-        else:
-            return f"{base_payload}; {proof_cmd}"
 
+        # Case D: default -- append with a separator
+        return f"{base_payload}; {proof_cmd}"
+
+    # ------------------------------------------------------------------ #
+    # Payload -> form-field parsing (multi-field body support)
+    # ------------------------------------------------------------------ #
+    def _parse_payload_to_fields(
+        self, payload: str, default_first_key: Optional[str] = None
+    ) -> Dict[str, str]:
+        """
+        If the payload looks like a multi-field form body
+        (key1=val1&key2=val2&...), split it into a dict.
+        Otherwise return an empty dict (caller falls back to single-field).
+
+        If the first segment has no '=' (e.g. the ThinkPHP template starts
+        with the bare token `__construct`), it is treated as the value of
+        `default_first_key` -- typically the claim's parameter_name
+        (e.g. `_method`).
+        """
+        if "&" not in payload:
+            return {}
+        segments = payload.split("&")
+        fields: Dict[str, str] = {}
+        for i, pair in enumerate(segments):
+            if "=" in pair:
+                k, v = pair.split("=", 1)
+                fields[k] = v
+            elif i == 0 and default_first_key:
+                fields[default_first_key] = pair
+            # else: malformed segment; skip
+        return fields
+
+    # ------------------------------------------------------------------ #
+    # Response normalization
+    # ------------------------------------------------------------------ #
+    @staticmethod
+    def _normalize_response(raw: str) -> str:
+        """
+        Normalize the response body before substring matching:
+          - strip ANSI escape sequences
+          - URL-decode percent-encoded sequences (one pass)
+        """
+        text = raw
+        ansi = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
+        text = ansi.sub("", text)
+        try:
+            from urllib.parse import unquote
+            text = unquote(text)
+        except Exception:
+            pass
+        return text
+
+    # ------------------------------------------------------------------ #
+    # HTTP dispatch
+    # ------------------------------------------------------------------ #
+    async def _dispatch(
+        self,
+        client: httpx.AsyncClient,
+        claim: ExploitClaim,
+        canary_payload: str,
+        headers: Dict[str, str],
+    ) -> httpx.Response:
+        """Send the probe according to the claim's injection point."""
+
+        if claim.injection_point == InjectionPoint.GET_PARAM:
+            params = {claim.parameter_name or "cmd": canary_payload}
+            return await client.get(claim.target_url, params=params, headers=headers)
+
+        if claim.injection_point == InjectionPoint.POST_BODY:
+            # Try multi-field parsing first (ThinkPHP-style primitives).
+            fields = self._parse_payload_to_fields(
+                canary_payload, default_first_key=claim.parameter_name
+            )
+            if fields:
+                return await client.post(claim.target_url, data=fields, headers=headers)
+            data = {claim.parameter_name or "cmd": canary_payload}
+            return await client.post(claim.target_url, data=data, headers=headers)
+
+        if claim.injection_point == InjectionPoint.JSON_FIELD:
+            json_data = {claim.parameter_name or "cmd": canary_payload}
+            return await client.post(claim.target_url, json=json_data, headers=headers)
+
+        if claim.injection_point == InjectionPoint.HEADER:
+            headers[claim.parameter_name or "X-Command"] = canary_payload
+            return await client.post(claim.target_url, headers=headers)
+
+        raise ValueError(f"Unsupported injection point: {claim.injection_point}")
+
+    # ------------------------------------------------------------------ #
+    # Main entry point
+    # ------------------------------------------------------------------ #
     async def verify(self, claim: ExploitClaim) -> FailureDiagnostic:
         val1, val2, expected_sum = self._generate_arithmetic_challenge()
-        canary_payload = self._synthesize_canary_payload(claim.candidate_payload, val1, val2)
+        canary_payload = self._synthesize_canary_payload(
+            claim.candidate_payload, val1, val2
+        )
         expected_str = str(expected_sum)
-        literal_pattern = f"{val1} + {val2}"
+        literal_pattern = f"expr {val1} + {val2}"
+        canary_id = f"{val1},{val2},{expected_sum}"
 
-        headers = claim.headers.copy()
-        
+        # Cache-Control headers to defeat stale responses (Assumption A1)
+        headers = dict(claim.headers)
+        headers.setdefault("Cache-Control", "no-cache, no-store, must-revalidate")
+        headers.setdefault("Pragma", "no-cache")
+
         try:
-            async with httpx.AsyncClient(timeout=self.timeout_seconds, verify=False) as client:
-                if claim.injection_point == InjectionPoint.GET_PARAM:
-                    params = {claim.parameter_name or "cmd": canary_payload}
-                    response = await client.get(claim.target_url, params=params, headers=headers)
-                elif claim.injection_point == InjectionPoint.POST_BODY:
-                    data = {claim.parameter_name or "cmd": canary_payload}
-                    response = await client.post(claim.target_url, data=data, headers=headers)
-                elif claim.injection_point == InjectionPoint.JSON_FIELD:
-                    json_data = {claim.parameter_name or "cmd": canary_payload}
-                    response = await client.post(claim.target_url, json=json_data, headers=headers)
-                elif claim.injection_point == InjectionPoint.HEADER:
-                    headers[claim.parameter_name or "X-Command"] = canary_payload
-                    response = await client.post(claim.target_url, headers=headers)
-                else:
+            async with httpx.AsyncClient(
+                timeout=self.timeout_seconds, verify=False
+            ) as client:
+                try:
+                    response = await self._dispatch(
+                        client, claim, canary_payload, headers
+                    )
+                except ValueError as ve:
                     return FailureDiagnostic(
                         status=VerificationStatus.ERROR,
                         oracle_name=self.oracle_name,
                         rejection_code="UNSUPPORTED_INJECTION_POINT",
-                        raw_observation=f"Injection point {claim.injection_point} not supported by this oracle.",
-                        recommended_action=RecommendedAction.TRY_ALTERNATIVE_VECTOR
+                        raw_observation=str(ve),
+                        recommended_action=RecommendedAction.TRY_ALTERNATIVE_VECTOR,
                     )
 
-            body = response.text
-            sum_match = re.search(r'\b' + re.escape(expected_str) + r'\b', body)
-            literal_match = literal_pattern in body
+            body = self._normalize_response(response.text)
 
-            if sum_match and not literal_match:
+            # Word-boundary search for the sum
+            sum_match = re.search(r"\b" + re.escape(expected_str) + r"\b", body)
+            # Reflection search: does either nonce (as a token) appear?
+            echo_x = re.search(r"\b" + re.escape(str(val1)) + r"\b", body) is not None
+            echo_y = re.search(r"\b" + re.escape(str(val2)) + r"\b", body) is not None
+            literal_match = literal_pattern in body
+            any_echo = echo_x or echo_y or literal_match
+
+            # --- VERIFIED ---
+            if sum_match:
                 return FailureDiagnostic(
                     status=VerificationStatus.VERIFIED,
                     oracle_name=self.oracle_name,
                     rejection_code="PROVEN_EXECUTION",
-                    raw_observation=f"Canary proof evaluated successfully. Expected {expected_str} found in body.",
+                    raw_observation=(
+                        f"Canary proof evaluated on target CPU. "
+                        f"Expected {expected_str} found in response body."
+                    ),
                     recommended_action=RecommendedAction.PROCEED_POST_EXPLOIT,
-                    mutated_canary=str(expected_sum)
+                    mutated_canary=canary_id,
                 )
-            elif literal_match and not sum_match:
+
+            # --- ECHO_ONLY ---
+            if any_echo:
                 return FailureDiagnostic(
                     status=VerificationStatus.REJECTED,
                     oracle_name=self.oracle_name,
                     rejection_code="CANARY_ECHO_ONLY",
-                    raw_observation=f"Target reflected literal string '{literal_pattern}' without shell evaluation.",
-                    recommended_action=RecommendedAction.MUTATE_PAYLOAD,
-                    mutated_canary=str(expected_sum)
+                    raw_observation=(
+                        f"Target reflected payload tokens (X_seen={echo_x}, "
+                        f"Y_seen={echo_y}) without shell evaluation."
+                    ),
+                    recommended_action=RecommendedAction.MUTATE_ENCODING,
+                    mutated_canary=canary_id,
                 )
-            else:
-                return FailureDiagnostic(
-                    status=VerificationStatus.REJECTED,
-                    oracle_name=self.oracle_name,
-                    rejection_code="CANARY_ABSENT",
-                    raw_observation=f"Neither execution proof ({expected_str}) nor reflection detected. HTTP Status: {response.status_code}.",
-                    recommended_action=RecommendedAction.BACKTRACK_BRANCH,
-                    mutated_canary=str(expected_sum)
-                )
+
+            # --- ABSENT ---
+            return FailureDiagnostic(
+                status=VerificationStatus.REJECTED,
+                oracle_name=self.oracle_name,
+                rejection_code="CANARY_ABSENT",
+                raw_observation=(
+                    f"Neither execution proof ({expected_str}) nor reflection "
+                    f"detected. HTTP Status: {response.status_code}."
+                ),
+                recommended_action=RecommendedAction.BACKTRACK_BRANCH,
+                mutated_canary=canary_id,
+            )
 
         except httpx.TimeoutException:
             return FailureDiagnostic(
                 status=VerificationStatus.REJECTED,
                 oracle_name=self.oracle_name,
                 rejection_code="PROBE_TIMEOUT",
-                raw_observation=f"Target connection timed out after {self.timeout_seconds}s.",
-                recommended_action=RecommendedAction.BACKTRACK_BRANCH
+                raw_observation=(
+                    f"Target connection timed out after {self.timeout_seconds}s."
+                ),
+                recommended_action=RecommendedAction.BACKTRACK_BRANCH,
+                mutated_canary=canary_id,
             )
         except Exception as e:
             return FailureDiagnostic(
@@ -115,5 +259,6 @@ class CanaryRCEOracle(BaseOracle):
                 oracle_name=self.oracle_name,
                 rejection_code="CONNECTION_FAILURE",
                 raw_observation=f"Oracle network error: {str(e)}",
-                recommended_action=RecommendedAction.BACKTRACK_BRANCH
+                recommended_action=RecommendedAction.BACKTRACK_BRANCH,
+                mutated_canary=canary_id,
             )

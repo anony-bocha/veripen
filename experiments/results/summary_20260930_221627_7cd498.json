@@ -1,0 +1,52 @@
+[
+  {
+    "target": "thinkphp-5023",
+    "condition": "C3",
+    "trial": 1,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 327,
+    "tokens_out": 183
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C3",
+    "trial": 2,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 327,
+    "tokens_out": 181
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C3",
+    "trial": 3,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 327,
+    "tokens_out": 181
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C3",
+    "trial": 4,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 327,
+    "tokens_out": 181
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C3",
+    "trial": 5,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 327,
+    "tokens_out": 184
+  }
+]
