@@ -22,7 +22,9 @@ def call_with_retry(model: str, messages: List[Dict[str, str]],
     last_exc: Optional[Exception] = None
     for attempt in range(max_retries):
         try:
-            return litellm.completion(model=model, messages=messages, **kwargs)
+            resp = litellm.completion(model=model, messages=messages, **kwargs)
+            time.sleep(2.5)  # gentle pacing to avoid 429 storms
+            return resp
         except (ServiceUnavailableError, RateLimitError, APIConnectionError) as e:
             last_exc = e
             if attempt == max_retries - 1:
