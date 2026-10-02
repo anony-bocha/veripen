@@ -19,6 +19,14 @@ NONCE_MIN = 1 << (NONCE_BITS - 1)      # 2^47
 NONCE_MAX = (1 << NONCE_BITS) - 1      # 2^48 - 1
 
 
+class _CurlResponse:
+    """Minimal shim so curl-based responses match the httpx.Response interface
+    used by the oracle (`.text` and `.status_code`)."""
+    def __init__(self, status_code: int, text: str):
+        self.status_code = status_code
+        self.text = text
+
+
 class CanaryRCEOracle(BaseOracle):
     """
     Deterministic Verification Oracle for Remote Code Execution / Command Injection.
@@ -122,6 +130,65 @@ class CanaryRCEOracle(BaseOracle):
         return text
 
     # ------------------------------------------------------------------ #
+    # HEADER injection via curl (bypasses httpx header-escaping)
+    # ------------------------------------------------------------------ #
+    async def _dispatch_header_via_curl(
+        self,
+        claim: ExploitClaim,
+        canary_payload: str,
+        headers: Dict[str, str],
+    ) -> _CurlResponse:
+        """
+        Send a POST with a raw header value using curl as a subprocess.
+
+        This bypasses httpx's header-escaping behavior, which mangles OGNL
+        payloads (Struts2 S2-045) and other payloads containing special
+        characters such as spaces, braces, and quotes.
+        """
+        import asyncio as _asyncio
+
+        header_name = claim.parameter_name or "X-Command"
+        args = [
+            "curl", "-s", "-i", "-X", "POST",
+            claim.target_url,
+            "-H", f"{header_name}: {canary_payload}",
+        ]
+        # Add any additional headers from the claim (skip Content-Type and the
+        # payload header itself; curl will set Content-Type from -H above).
+        for k, v in headers.items():
+            if k.lower() == header_name.lower():
+                continue
+            if k.lower() == "content-type":
+                continue
+            args.extend(["-H", f"{k}: {v}"])
+
+        proc = await _asyncio.create_subprocess_exec(
+            *args,
+            stdout=_asyncio.subprocess.PIPE,
+            stderr=_asyncio.subprocess.PIPE,
+        )
+        stdout, stderr = await proc.communicate()
+
+        raw_response = stdout.decode("utf-8", errors="replace")
+
+        # Parse curl's raw HTTP response into a minimal shim object.
+        status_code = 200
+        body = raw_response
+        if raw_response.startswith("HTTP/"):
+            parts = raw_response.split("\r\n\r\n", 1)
+            if len(parts) == 2:
+                header_block, body = parts
+                first_line = header_block.split("\r\n", 1)[0]
+                tokens = first_line.split()
+                if len(tokens) >= 2:
+                    try:
+                        status_code = int(tokens[1])
+                    except ValueError:
+                        pass
+
+        return _CurlResponse(status_code=status_code, text=body)
+
+    # ------------------------------------------------------------------ #
     # HTTP dispatch
     # ------------------------------------------------------------------ #
     async def _dispatch(
@@ -130,7 +197,7 @@ class CanaryRCEOracle(BaseOracle):
         claim: ExploitClaim,
         canary_payload: str,
         headers: Dict[str, str],
-    ) -> httpx.Response:
+    ):
         """Send the probe according to the claim's injection point."""
 
         if claim.injection_point == InjectionPoint.GET_PARAM:
@@ -152,8 +219,8 @@ class CanaryRCEOracle(BaseOracle):
             return await client.post(claim.target_url, json=json_data, headers=headers)
 
         if claim.injection_point == InjectionPoint.HEADER:
-            headers[claim.parameter_name or "X-Command"] = canary_payload
-            return await client.post(claim.target_url, headers=headers)
+            # Use curl for raw header transmission. httpx escapes special chars.
+            return await self._dispatch_header_via_curl(claim, canary_payload, headers)
 
         raise ValueError(f"Unsupported injection point: {claim.injection_point}")
 
