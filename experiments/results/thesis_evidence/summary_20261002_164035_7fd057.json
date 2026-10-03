@@ -1,0 +1,12 @@
+[
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C4",
+    "trial": 1,
+    "final_verdict": "INCONCLUSIVE",
+    "steps": 20,
+    "l_deg": 2,
+    "tokens_in": 13802,
+    "tokens_out": 3539
+  }
+]

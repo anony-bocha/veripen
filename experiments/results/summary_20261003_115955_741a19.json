@@ -1,0 +1,12 @@
+[
+  {
+    "target": "struts2-s2045",
+    "condition": "C1",
+    "trial": 1,
+    "final_verdict": "INCONCLUSIVE",
+    "steps": 20,
+    "l_deg": 5,
+    "tokens_in": 39483,
+    "tokens_out": 12008
+  }
+]
