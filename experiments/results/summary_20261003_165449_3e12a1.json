@@ -1,0 +1,12 @@
+[
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C2",
+    "trial": 1,
+    "final_verdict": "INCONCLUSIVE",
+    "steps": 20,
+    "l_deg": 7,
+    "tokens_in": 20910,
+    "tokens_out": 3880
+  }
+]

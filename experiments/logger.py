@@ -17,7 +17,16 @@ class AblationLogger:
     def __init__(self, run_id: str):
         self.run_id = run_id
         self.path = RESULTS_DIR / f"run_{run_id}.jsonl"
-        self._fh = open(self.path, "a", encoding="utf-8")
+        self._steps_written = 0
+        self._closed = False
+        try:
+            self._fh = open(self.path, "a", encoding="utf-8")
+        except Exception as e:
+            # Surface the failure loudly. Silent logger failures hide data loss.
+            print(f"[logger] FATAL: could not open {self.path}: {e}")
+            raise
+        # Diagnostic line so we can confirm in the console which file each run writes.
+        print(f"[logger] writing step logs to {self.path}")
 
     def step(
         self,
@@ -34,6 +43,10 @@ class AblationLogger:
         tokens_in: int,
         tokens_out: int,
     ) -> None:
+        if self._closed:
+            print(f"[logger] WARNING: write after close, step {step_index} dropped")
+            return
+
         record = {
             "run_id": self.run_id,
             "target": target_id,
@@ -52,8 +65,26 @@ class AblationLogger:
             "tokens_in": tokens_in,
             "tokens_out": tokens_out,
         }
-        self._fh.write(json.dumps(record) + "\n")
-        self._fh.flush()
+        try:
+            self._fh.write(json.dumps(record) + "\n")
+            self._fh.flush()
+            self._steps_written += 1
+        except Exception as e:
+            print(f"[logger] WARNING: write failed at step {step_index}: {e}")
 
     def close(self) -> None:
-        self._fh.close()
+        if self._closed:
+            return
+        try:
+            self._fh.flush()
+            self._fh.close()
+        finally:
+            self._closed = True
+            print(f"[logger] closed {self.path} ({self._steps_written} steps written)")
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+        return False

@@ -205,6 +205,14 @@ class CanaryRCEOracle(BaseOracle):
             return await client.get(claim.target_url, params=params, headers=headers)
 
         if claim.injection_point == InjectionPoint.POST_BODY:
+            # Special case: raw PHP code body (CVE-2012-1823 style).
+            # The payload IS the request body, not a form field.
+            if canary_payload.strip().startswith("<?php"):
+                return await client.post(
+                    claim.target_url,
+                    content=canary_payload.encode("utf-8"),
+                    headers={**headers, "Content-Type": "application/x-www-form-urlencoded"},
+                )
             # Try multi-field parsing first (ThinkPHP-style primitives).
             fields = self._parse_payload_to_fields(
                 canary_payload, default_first_key=claim.parameter_name

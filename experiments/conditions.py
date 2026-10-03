@@ -87,6 +87,11 @@ def _resolve_cmd_placeholder(payload: str, replacement: str = "id") -> str:
     return payload
 
 
+def _is_raw_php_body(payload: str) -> bool:
+    """CVE-2012-1823 style: the payload IS the request body, not a form field."""
+    return payload.strip().startswith("<?php")
+
+
 class _CurlShim:
     """Minimal response object so C1/C2 can treat curl and httpx
     responses identically. Only `.status_code` and `.text` are used."""
@@ -118,7 +123,13 @@ class C1RegexVerifier:
         try:
             async with httpx.AsyncClient(timeout=8.0, verify=False) as client:
                 if claim.injection_point.value == "POST_BODY":
-                    if "&" in payload:
+                    if _is_raw_php_body(payload):
+                        r = await client.post(
+                            claim.target_url,
+                            content=payload.encode("utf-8"),
+                            headers={**headers, "Content-Type": "application/x-www-form-urlencoded"},
+                        )
+                    elif "&" in payload:
                         fields = {}
                         for p in payload.split("&"):
                             if "=" in p:
@@ -195,7 +206,13 @@ class C2LLMJudgeVerifier:
         try:
             async with httpx.AsyncClient(timeout=8.0, verify=False) as client:
                 if claim.injection_point.value == "POST_BODY":
-                    if "&" in payload:
+                    if _is_raw_php_body(payload):
+                        r = await client.post(
+                            claim.target_url,
+                            content=payload.encode("utf-8"),
+                            headers={**headers, "Content-Type": "application/x-www-form-urlencoded"},
+                        )
+                    elif "&" in payload:
                         fields = {}
                         for p in payload.split("&"):
                             if "=" in p:

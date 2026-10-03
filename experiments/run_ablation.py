@@ -147,29 +147,29 @@ async def run_all(targets, conditions, trials):
     red = AgentRed()
     summary = []
 
-    for target in targets:
-        console.rule(f"[bold cyan]Target: {target['name']}[/bold cyan]")
+    try:
+        for target in targets:
+            console.rule(f"[bold cyan]Target: {target['name']}[/bold cyan]")
 
-        for cond in conditions:
-            console.print(f"[yellow]Bringing up target for {target['id']} / {cond}...[/yellow]")
-            proc = bring_up_target(target)
-            if target.get("type") != "mock" and proc is None and not wait_healthy(target["url"], timeout=1):
-                pass  # docker path; we check health below
-            time.sleep(target.get("boot_wait_seconds", 5))
-            if not wait_healthy(target["url"], timeout=20):
-                console.print("[yellow]Healthcheck failed; continuing anyway[/yellow]")
+            for cond in conditions:
+                console.print(f"[yellow]Bringing up target for {target['id']} / {cond}...[/yellow]")
+                proc = bring_up_target(target)
+                time.sleep(target.get("boot_wait_seconds", 5))
+                if not wait_healthy(target["url"], timeout=20):
+                    console.print("[yellow]Healthcheck failed; continuing anyway[/yellow]")
 
-            for t in range(1, trials + 1):
-                console.print(f"  -> trial {t}/{trials} [{cond}]")
-                try:
-                    result = await run_trial(target, cond, t, red, logger)
-                    summary.append(result)
-                except Exception as e:
-                    console.print(f"[red]Trial error:[/red] {e}")
+                for t in range(1, trials + 1):
+                    console.print(f"  -> trial {t}/{trials} [{cond}]")
+                    try:
+                        result = await run_trial(target, cond, t, red, logger)
+                        summary.append(result)
+                    except Exception as e:
+                        console.print(f"[red]Trial error:[/red] {e}")
 
-            tear_down_target(target, proc)
-
-    logger.close()
+                tear_down_target(target, proc)
+    finally:
+        # Guarantee the logger is closed even if a target or trial crashes.
+        logger.close()
 
     console.rule("[bold green]Ablation Summary[/bold green]")
     table = Table()

