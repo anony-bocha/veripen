@@ -3,6 +3,7 @@ import os
 import re
 import time
 import json
+import asyncio as _asyncio
 from dataclasses import dataclass
 from typing import Optional
 
@@ -16,6 +17,84 @@ from veripen.core.schemas import (
 MODEL = "gemini/gemini-flash-lite-latest"
 
 
+# -------------------------------------------------------------------------
+# Shared curl-based HEADER dispatch
+#
+# Both C1 and C2 use this for HEADER injection points because:
+#   1. httpx percent-encodes header values, breaking OGNL payloads
+#   2. httpx raises on incomplete chunked reads, which Struts2 produces
+#      when OGNL writes to getOutputStream() and the connection closes
+#      before the response is fully streamed
+# -------------------------------------------------------------------------
+async def _curl_header_post(
+    target_url: str,
+    header_name: str,
+    header_value: str,
+    extra_headers: dict,
+) -> tuple:
+    """Send a POST with a raw header value using curl as a subprocess.
+
+    Returns (status_code, body).
+    """
+    args = [
+        "curl", "-s", "-i", "-X", "POST",
+        target_url,
+        "-H", f"{header_name}: {header_value}",
+    ]
+    for k, v in (extra_headers or {}).items():
+        if k.lower() == header_name.lower():
+            continue
+        if k.lower() == "content-type":
+            continue
+        args.extend(["-H", f"{k}: {v}"])
+
+    proc = await _asyncio.create_subprocess_exec(
+        *args,
+        stdout=_asyncio.subprocess.PIPE,
+        stderr=_asyncio.subprocess.PIPE,
+    )
+    stdout, _ = await proc.communicate()
+    raw = stdout.decode("utf-8", errors="replace")
+
+    status_code = 200
+    body = raw
+    if raw.startswith("HTTP/"):
+        parts = raw.split("\r\n\r\n", 1)
+        if len(parts) == 2:
+            header_block, body = parts
+            first_line = header_block.split("\r\n", 1)[0]
+            tokens = first_line.split()
+            if len(tokens) >= 2:
+                try:
+                    status_code = int(tokens[1])
+                except ValueError:
+                    pass
+    return status_code, body
+
+
+def _resolve_cmd_placeholder(payload: str, replacement: str = "id") -> str:
+    """
+    C1 and C2 do not use arithmetic canaries. If the planner's payload
+    contains the {CMD} placeholder (Red now always emits one), substitute
+    a plain command so the payload actually executes.
+
+    A real regex/LLM baseline would substitute whatever exploit command
+    the operator requested. We use 'id' because its output (uid=, gid=)
+    is easy for both C1 and C2 to recognise.
+    """
+    if "{CMD}" in payload:
+        return payload.replace("{CMD}", replacement)
+    return payload
+
+
+class _CurlShim:
+    """Minimal response object so C1/C2 can treat curl and httpx
+    responses identically. Only `.status_code` and `.text` are used."""
+    def __init__(self, status_code: int, text: str):
+        self.status_code = status_code
+        self.text = text
+
+
 @dataclass
 class VerifierResult:
     verdict: str
@@ -25,12 +104,15 @@ class VerifierResult:
     latency_ms: float
 
 
+# =========================================================================
+# C1 — Regex baseline
+# =========================================================================
 class C1RegexVerifier:
     KEYWORDS = ["uid=", "root:", "gid=", "33333", "expr ", "syntax error", "system("]
 
     async def verify(self, claim: ExploitClaim) -> VerifierResult:
         import httpx
-        payload = claim.candidate_payload
+        payload = _resolve_cmd_placeholder(claim.candidate_payload, "id")
         headers = dict(claim.headers)
         start = time.perf_counter()
         try:
@@ -49,6 +131,14 @@ class C1RegexVerifier:
                             data={claim.parameter_name or "cmd": payload},
                             headers=headers,
                         )
+                elif claim.injection_point.value == "HEADER":
+                    sc, body_text = await _curl_header_post(
+                        claim.target_url,
+                        claim.parameter_name or "X-Test",
+                        payload,
+                        headers,
+                    )
+                    r = _CurlShim(status_code=sc, text=body_text)
                 else:
                     headers[claim.parameter_name or "X-Test"] = payload
                     r = await client.post(claim.target_url, headers=headers)
@@ -70,6 +160,9 @@ class C1RegexVerifier:
             )
 
 
+# =========================================================================
+# C2 — LLM-as-a-Judge baseline
+# =========================================================================
 C2_SYSTEM_PROMPT = """You are an expert security auditor evaluating whether an attempted
 penetration testing probe successfully executed on the target.
 
@@ -96,7 +189,7 @@ class C2LLMJudgeVerifier:
         import httpx
         from experiments.red_agent import call_with_retry
 
-        payload = claim.candidate_payload
+        payload = _resolve_cmd_placeholder(claim.candidate_payload, "id")
         headers = dict(claim.headers)
         start = time.perf_counter()
         try:
@@ -115,6 +208,14 @@ class C2LLMJudgeVerifier:
                             data={claim.parameter_name or "cmd": payload},
                             headers=headers,
                         )
+                elif claim.injection_point.value == "HEADER":
+                    sc, body_text = await _curl_header_post(
+                        claim.target_url,
+                        claim.parameter_name or "X-Test",
+                        payload,
+                        headers,
+                    )
+                    r = _CurlShim(status_code=sc, text=body_text)
                 else:
                     headers[claim.parameter_name or "X-Test"] = payload
                     r = await client.post(claim.target_url, headers=headers)
@@ -163,6 +264,9 @@ class C2LLMJudgeVerifier:
             )
 
 
+# =========================================================================
+# C3 — Deterministic oracle (raw feedback to Red)
+# =========================================================================
 class C3OracleRawVerifier:
     def __init__(self):
         from veripen.oracles.canary_rce import CanaryRCEOracle
@@ -185,6 +289,9 @@ class C3OracleRawVerifier:
         )
 
 
+# =========================================================================
+# C4 — Deterministic oracle (structured feedback to Red)
+# =========================================================================
 class C4OracleStructuredVerifier:
     def __init__(self):
         from veripen.oracles.canary_rce import CanaryRCEOracle
