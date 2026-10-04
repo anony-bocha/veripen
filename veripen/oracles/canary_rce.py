@@ -1,5 +1,6 @@
 import secrets
 import re
+import json
 import httpx
 from typing import Tuple, Dict, Optional
 from veripen.oracles.base_oracle import BaseOracle
@@ -17,6 +18,14 @@ from veripen.core.schemas import (
 NONCE_BITS = 48
 NONCE_MIN = 1 << (NONCE_BITS - 1)      # 2^47
 NONCE_MAX = (1 << NONCE_BITS) - 1      # 2^48 - 1
+
+
+def _looks_like_groovy_script(text: str) -> bool:
+    """Heuristic: is this a bare Groovy script (no JSON wrapper)?"""
+    s = text.strip()
+    if s.startswith("{"):
+        return False
+    return ".exec(" in s or "getText()" in s or "getRuntime()" in s
 
 
 class _CurlResponse:
@@ -45,7 +54,6 @@ class CanaryRCEOracle(BaseOracle):
     # Nonce generation (Assumption A1: CSPRNG, uniform over [2^47, 2^48))
     # ------------------------------------------------------------------ #
     def _generate_arithmetic_challenge(self) -> Tuple[int, int, int]:
-        # secrets.randbelow is rejection-sampled -> no modulo bias.
         span = NONCE_MAX - NONCE_MIN + 1
         val1 = NONCE_MIN + secrets.randbelow(span)
         val2 = NONCE_MIN + secrets.randbelow(span)
@@ -62,12 +70,10 @@ class CanaryRCEOracle(BaseOracle):
             return base_payload.replace("{CMD}", proof_cmd)
 
         # Case B: template ends with "=" -- the sink is the last field value.
-        # This is the ThinkPHP-style primitive:
-        #   __construct&filter[]=system&method=get&server[REQUEST_METHOD]=<CMD>
         if base_payload.endswith("="):
             return f"{base_payload}{proof_cmd}"
 
-        # Case C: shell-style concatenation (simple command injection)
+        # Case C: shell-style concatenation
         if ";" in base_payload:
             return f"{base_payload}; {proof_cmd}"
         elif "&&" in base_payload:
@@ -77,25 +83,15 @@ class CanaryRCEOracle(BaseOracle):
         elif "$(" in base_payload or "`" in base_payload:
             return f"$({proof_cmd})"
 
-        # Case D: default -- append with a separator
+        # Case D: default
         return f"{base_payload}; {proof_cmd}"
 
     # ------------------------------------------------------------------ #
-    # Payload -> form-field parsing (multi-field body support)
+    # Payload -> form-field parsing
     # ------------------------------------------------------------------ #
     def _parse_payload_to_fields(
         self, payload: str, default_first_key: Optional[str] = None
     ) -> Dict[str, str]:
-        """
-        If the payload looks like a multi-field form body
-        (key1=val1&key2=val2&...), split it into a dict.
-        Otherwise return an empty dict (caller falls back to single-field).
-
-        If the first segment has no '=' (e.g. the ThinkPHP template starts
-        with the bare token `__construct`), it is treated as the value of
-        `default_first_key` -- typically the claim's parameter_name
-        (e.g. `_method`).
-        """
         if "&" not in payload:
             return {}
         segments = payload.split("&")
@@ -106,7 +102,6 @@ class CanaryRCEOracle(BaseOracle):
                 fields[k] = v
             elif i == 0 and default_first_key:
                 fields[default_first_key] = pair
-            # else: malformed segment; skip
         return fields
 
     # ------------------------------------------------------------------ #
@@ -114,11 +109,6 @@ class CanaryRCEOracle(BaseOracle):
     # ------------------------------------------------------------------ #
     @staticmethod
     def _normalize_response(raw: str) -> str:
-        """
-        Normalize the response body before substring matching:
-          - strip ANSI escape sequences
-          - URL-decode percent-encoded sequences (one pass)
-        """
         text = raw
         ansi = re.compile(r"\x1B\[[0-?]*[ -/]*[@-~]")
         text = ansi.sub("", text)
@@ -130,7 +120,7 @@ class CanaryRCEOracle(BaseOracle):
         return text
 
     # ------------------------------------------------------------------ #
-    # HEADER injection via curl (bypasses httpx header-escaping)
+    # HEADER injection via curl
     # ------------------------------------------------------------------ #
     async def _dispatch_header_via_curl(
         self,
@@ -138,13 +128,6 @@ class CanaryRCEOracle(BaseOracle):
         canary_payload: str,
         headers: Dict[str, str],
     ) -> _CurlResponse:
-        """
-        Send a POST with a raw header value using curl as a subprocess.
-
-        This bypasses httpx's header-escaping behavior, which mangles OGNL
-        payloads (Struts2 S2-045) and other payloads containing special
-        characters such as spaces, braces, and quotes.
-        """
         import asyncio as _asyncio
 
         header_name = claim.parameter_name or "X-Command"
@@ -153,8 +136,6 @@ class CanaryRCEOracle(BaseOracle):
             claim.target_url,
             "-H", f"{header_name}: {canary_payload}",
         ]
-        # Add any additional headers from the claim (skip Content-Type and the
-        # payload header itself; curl will set Content-Type from -H above).
         for k, v in headers.items():
             if k.lower() == header_name.lower():
                 continue
@@ -168,10 +149,8 @@ class CanaryRCEOracle(BaseOracle):
             stderr=_asyncio.subprocess.PIPE,
         )
         stdout, stderr = await proc.communicate()
-
         raw_response = stdout.decode("utf-8", errors="replace")
 
-        # Parse curl's raw HTTP response into a minimal shim object.
         status_code = 200
         body = raw_response
         if raw_response.startswith("HTTP/"):
@@ -205,15 +184,14 @@ class CanaryRCEOracle(BaseOracle):
             return await client.get(claim.target_url, params=params, headers=headers)
 
         if claim.injection_point == InjectionPoint.POST_BODY:
-            # Special case: raw PHP code body (CVE-2012-1823 style).
-            # The payload IS the request body, not a form field.
+            # Raw PHP code body (CVE-2012-1823 style).
             if canary_payload.strip().startswith("<?php"):
                 return await client.post(
                     claim.target_url,
                     content=canary_payload.encode("utf-8"),
                     headers={**headers, "Content-Type": "application/x-www-form-urlencoded"},
                 )
-            # Try multi-field parsing first (ThinkPHP-style primitives).
+            # ThinkPHP-style multi-field primitives.
             fields = self._parse_payload_to_fields(
                 canary_payload, default_first_key=claim.parameter_name
             )
@@ -223,11 +201,39 @@ class CanaryRCEOracle(BaseOracle):
             return await client.post(claim.target_url, data=data, headers=headers)
 
         if claim.injection_point == InjectionPoint.JSON_FIELD:
+            stripped = canary_payload.strip()
+
+            # Case 1: full JSON document -- send raw.
+            if stripped.startswith("{"):
+                return await client.post(
+                    claim.target_url,
+                    content=stripped.encode("utf-8"),
+                    headers={**headers, "Content-Type": "application/json"},
+                )
+
+            # Case 2: bare Groovy expression (Elasticsearch CVE-2015-1427).
+            # Wrap it in the JSON envelope the target expects.
+            if _looks_like_groovy_script(stripped):
+                envelope = {
+                    "size": 1,
+                    "script_fields": {
+                        "proof": {
+                            "lang": "groovy",
+                            "script": stripped,
+                        }
+                    },
+                }
+                return await client.post(
+                    claim.target_url,
+                    content=json.dumps(envelope).encode("utf-8"),
+                    headers={**headers, "Content-Type": "application/json"},
+                )
+
+            # Case 3: wrap as a single JSON field.
             json_data = {claim.parameter_name or "cmd": canary_payload}
             return await client.post(claim.target_url, json=json_data, headers=headers)
 
         if claim.injection_point == InjectionPoint.HEADER:
-            # Use curl for raw header transmission. httpx escapes special chars.
             return await self._dispatch_header_via_curl(claim, canary_payload, headers)
 
         raise ValueError(f"Unsupported injection point: {claim.injection_point}")
@@ -244,7 +250,6 @@ class CanaryRCEOracle(BaseOracle):
         literal_pattern = f"expr {val1} + {val2}"
         canary_id = f"{val1},{val2},{expected_sum}"
 
-        # Cache-Control headers to defeat stale responses (Assumption A1)
         headers = dict(claim.headers)
         headers.setdefault("Cache-Control", "no-cache, no-store, must-revalidate")
         headers.setdefault("Pragma", "no-cache")
@@ -267,16 +272,12 @@ class CanaryRCEOracle(BaseOracle):
                     )
 
             body = self._normalize_response(response.text)
-
-            # Word-boundary search for the sum
             sum_match = re.search(r"\b" + re.escape(expected_str) + r"\b", body)
-            # Reflection search: does either nonce (as a token) appear?
             echo_x = re.search(r"\b" + re.escape(str(val1)) + r"\b", body) is not None
             echo_y = re.search(r"\b" + re.escape(str(val2)) + r"\b", body) is not None
             literal_match = literal_pattern in body
             any_echo = echo_x or echo_y or literal_match
 
-            # --- VERIFIED ---
             if sum_match:
                 return FailureDiagnostic(
                     status=VerificationStatus.VERIFIED,
@@ -290,7 +291,6 @@ class CanaryRCEOracle(BaseOracle):
                     mutated_canary=canary_id,
                 )
 
-            # --- ECHO_ONLY ---
             if any_echo:
                 return FailureDiagnostic(
                     status=VerificationStatus.REJECTED,
@@ -304,7 +304,6 @@ class CanaryRCEOracle(BaseOracle):
                     mutated_canary=canary_id,
                 )
 
-            # --- ABSENT ---
             return FailureDiagnostic(
                 status=VerificationStatus.REJECTED,
                 oracle_name=self.oracle_name,

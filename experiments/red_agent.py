@@ -111,6 +111,12 @@ class AgentRed:
           - Empty content (model returned empty string)
           - Markdown-fenced JSON
           - JSON embedded in prose
+          - Invalid backslash escapes (common with nested-quote payloads)
+
+        The last case matters because Red often emits payloads with
+        Groovy, OGNL, or JSON escapes inside a JSON string. The LLM
+        sometimes produces \\x or \\' sequences that strict JSON rejects.
+        We sanitize those before parsing.
         """
         content = resp.choices[0].message.content
         if content is None or not content.strip():
@@ -121,13 +127,41 @@ class AgentRed:
             raw = re.sub(r"^```[a-z]*\n?", "", raw)
             raw = re.sub(r"\n?```$", "", raw)
 
+        # Attempt 1: direct parse.
+        data = None
         try:
             data = json.loads(raw)
         except json.JSONDecodeError:
+            pass
+
+        # Attempt 2: extract the first {...} block and parse it.
+        if data is None:
             m = re.search(r"\{.*\}", raw, re.DOTALL)
-            if not m:
-                raise ValueError(f"Could not extract JSON from LLM response: {raw[:200]}")
-            data = json.loads(m.group(0))
+            if m:
+                try:
+                    data = json.loads(m.group(0))
+                except json.JSONDecodeError:
+                    pass
+
+        # Attempt 3: sanitize invalid backslash escapes, then parse.
+        # JSON only allows: \", \\, \/, \b, \f, \n, \r, \t, \uXXXX.
+        # Any other \x sequence is illegal and must be doubled.
+        if data is None:
+            sanitized = re.sub(r'\\(?!["\\/bfnrtu])', r'\\\\', raw)
+            try:
+                data = json.loads(sanitized)
+            except json.JSONDecodeError:
+                m = re.search(r"\{.*\}", sanitized, re.DOTALL)
+                if m:
+                    try:
+                        data = json.loads(m.group(0))
+                    except json.JSONDecodeError:
+                        pass
+
+        if data is None:
+            raise ValueError(
+                f"Could not extract JSON from LLM response: {raw[:200]}"
+            )
 
         claim = ExploitClaim(**data)
 
@@ -158,6 +192,7 @@ class AgentRed:
                         {"role": "user", "content": prompt},
                     ],
                     temperature=self.temperature,
+                    max_tokens=4096,
                 )
                 return self._parse_response(resp)
             except ValueError as e:

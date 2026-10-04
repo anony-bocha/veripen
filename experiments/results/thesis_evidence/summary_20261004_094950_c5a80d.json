@@ -1,0 +1,12 @@
+[
+  {
+    "target": "elasticsearch-2015-1427",
+    "condition": "C1",
+    "trial": 1,
+    "final_verdict": "ERROR",
+    "steps": 20,
+    "l_deg": 3,
+    "tokens_in": 21188,
+    "tokens_out": 4051
+  }
+]

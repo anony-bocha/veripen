@@ -58,7 +58,35 @@ def bring_up_target(target: Dict[str, Any]) -> Optional[subprocess.Popen]:
         compose_path = VULHUB_ROOT / target["compose_path"] / "docker-compose.yml"
         if not compose(["up", "-d"], compose_path):
             return None
-        return None  # docker has no Popen handle
+        # If a seed is required (e.g. Elasticsearch index), send it now.
+        # Retry until the target is ready (Elasticsearch can take 20-30s).
+        if target.get("seed_endpoint"):
+            import httpx
+            seed_headers = {
+                "Content-Type": target.get("seed_content_type", "application/json")
+            }
+            method = target.get("seed_method", "POST").upper()
+            seed_body = target.get("seed_body", "")
+            seed_url = target["seed_endpoint"]
+
+            success = False
+            for attempt in range(15):  # up to ~45 seconds
+                time.sleep(3)
+                try:
+                    with httpx.Client(timeout=10.0, verify=False) as c:
+                        if method == "POST":
+                            r = c.post(seed_url, content=seed_body, headers=seed_headers)
+                        else:
+                            r = c.get(seed_url, headers=seed_headers)
+                    if r.status_code in (200, 201):
+                        console.print(f"[dim]Seeded {seed_url} (attempt {attempt+1})[/dim]")
+                        success = True
+                        break
+                except Exception:
+                    continue
+            if not success:
+                console.print("[yellow]Seed failed after retries; continuing anyway[/yellow]")
+        return None
 
 
 def tear_down_target(target: Dict[str, Any], proc: Optional[subprocess.Popen]) -> None:
