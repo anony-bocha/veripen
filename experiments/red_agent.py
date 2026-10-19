@@ -59,7 +59,7 @@ You must output STRICT JSON matching this schema:
 {
   "target_url": "string",
   "vulnerability_type": "CWE-78_Command_Injection",
-  "injection_point": "POST_BODY" | "GET_PARAM" | "HEADER" | "JSON_FIELD",
+  "injection_point": "POST_BODY" | "GET_PARAM" | "HEADER" | "JSON_FIELD" | "URI_PATH",
   "parameter_name": "string or null",
   "candidate_payload": "string",
   "http_method": "POST",
