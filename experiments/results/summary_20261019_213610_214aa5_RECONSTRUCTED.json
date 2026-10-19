@@ -1,0 +1,812 @@
+[
+  {
+    "target": "struts2-s2045",
+    "condition": "C1",
+    "trial": 1,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 667
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C4",
+    "trial": 8,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 662
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C1",
+    "trial": 1,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 178
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C1",
+    "trial": 2,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 175
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C1",
+    "trial": 3,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 177
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C1",
+    "trial": 4,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 182
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C1",
+    "trial": 5,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 177
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C1",
+    "trial": 6,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 178
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C1",
+    "trial": 7,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 177
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C1",
+    "trial": 8,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 182
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C1",
+    "trial": 9,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 178
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C1",
+    "trial": 10,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 182
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C2",
+    "trial": 1,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 172
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C2",
+    "trial": 2,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 175
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C2",
+    "trial": 3,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 176
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C2",
+    "trial": 4,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 175
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C2",
+    "trial": 5,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 175
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C2",
+    "trial": 6,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 179
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C2",
+    "trial": 7,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 178
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C2",
+    "trial": 8,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 178
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C2",
+    "trial": 9,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 181
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C2",
+    "trial": 10,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 181
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C3",
+    "trial": 1,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 178
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C3",
+    "trial": 2,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 182
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C3",
+    "trial": 3,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 168
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C3",
+    "trial": 4,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 175
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C3",
+    "trial": 5,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 174
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C3",
+    "trial": 6,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 175
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C3",
+    "trial": 7,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 175
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C3",
+    "trial": 8,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 182
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C3",
+    "trial": 9,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 174
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C3",
+    "trial": 10,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 181
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C4",
+    "trial": 1,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 176
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C4",
+    "trial": 2,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 175
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C4",
+    "trial": 3,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 178
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C4",
+    "trial": 4,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 178
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C4",
+    "trial": 5,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 187
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C4",
+    "trial": 6,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 178
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C4",
+    "trial": 7,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 177
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C4",
+    "trial": 8,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 183
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C4",
+    "trial": 9,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 179
+  },
+  {
+    "target": "thinkphp-5023",
+    "condition": "C4",
+    "trial": 10,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 171
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C1",
+    "trial": 1,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 176
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C1",
+    "trial": 2,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 178
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C1",
+    "trial": 3,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 178
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C1",
+    "trial": 4,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 180
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C1",
+    "trial": 5,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 180
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C1",
+    "trial": 7,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 175
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C1",
+    "trial": 8,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 178
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C1",
+    "trial": 9,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 174
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C1",
+    "trial": 10,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 182
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C2",
+    "trial": 1,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 174
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C2",
+    "trial": 2,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 182
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C2",
+    "trial": 3,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 178
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C2",
+    "trial": 4,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 171
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C2",
+    "trial": 5,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 175
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C2",
+    "trial": 6,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 176
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C2",
+    "trial": 7,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 175
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C2",
+    "trial": 8,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 178
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C2",
+    "trial": 9,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 174
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C2",
+    "trial": 10,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 587,
+    "tokens_out": 187
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C3",
+    "trial": 1,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 3,
+    "tokens_in": 18345,
+    "tokens_out": 3575
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C3",
+    "trial": 2,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 4,
+    "tokens_in": 18480,
+    "tokens_out": 3637
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C3",
+    "trial": 3,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 2,
+    "tokens_in": 18432,
+    "tokens_out": 3653
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C3",
+    "trial": 4,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 4,
+    "tokens_in": 18512,
+    "tokens_out": 3644
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C3",
+    "trial": 5,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 6,
+    "tokens_in": 18544,
+    "tokens_out": 3646
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C3",
+    "trial": 6,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 3,
+    "tokens_in": 18676,
+    "tokens_out": 3662
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C3",
+    "trial": 7,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 7,
+    "tokens_in": 18445,
+    "tokens_out": 3660
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C3",
+    "trial": 8,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 4,
+    "tokens_in": 18281,
+    "tokens_out": 3629
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C3",
+    "trial": 9,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 5,
+    "tokens_in": 18484,
+    "tokens_out": 3649
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C3",
+    "trial": 10,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 5,
+    "tokens_in": 18380,
+    "tokens_out": 3625
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C4",
+    "trial": 1,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 4,
+    "tokens_in": 19047,
+    "tokens_out": 3623
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C4",
+    "trial": 2,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 5,
+    "tokens_in": 19187,
+    "tokens_out": 3638
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C4",
+    "trial": 3,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 4,
+    "tokens_in": 18987,
+    "tokens_out": 3601
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C4",
+    "trial": 4,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 3,
+    "tokens_in": 19150,
+    "tokens_out": 3642
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C4",
+    "trial": 5,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 3,
+    "tokens_in": 18999,
+    "tokens_out": 3665
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C4",
+    "trial": 6,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 4,
+    "tokens_in": 19184,
+    "tokens_out": 3642
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C4",
+    "trial": 7,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 1,
+    "tokens_in": 18947,
+    "tokens_out": 3601
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C4",
+    "trial": 8,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 4,
+    "tokens_in": 18895,
+    "tokens_out": 3591
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C4",
+    "trial": 9,
+    "final_verdict": "REJECTED",
+    "steps": 20,
+    "l_deg": 2,
+    "tokens_in": 18901,
+    "tokens_out": 3577
+  },
+  {
+    "target": "thinkphp-reflection",
+    "condition": "C4",
+    "trial": 10,
+    "final_verdict": "REJECTED",
+    "steps": 4,
+    "l_deg": 0,
+    "tokens_in": 2890,
+    "tokens_out": 703
+  }
+]
