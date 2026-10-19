@@ -138,7 +138,8 @@ class VerifierResult:
 # C1 — Regex baseline
 # =========================================================================
 class C1RegexVerifier:
-    KEYWORDS = ["uid=", "root:", "gid=", "33333", "expr ", "syntax error", "system("]
+    # FIXED: Removed hardcoded "33333" and "expr " which leaked ground truth.
+    KEYWORDS = ["uid=", "root:", "gid=", "syntax error", "system("]
 
     async def verify(self, claim: ExploitClaim) -> VerifierResult:
         import httpx
@@ -178,6 +179,12 @@ class C1RegexVerifier:
                 elif claim.injection_point.value == "JSON_FIELD":
                     kwargs = _json_field_request_kwargs(payload, claim.parameter_name, headers)
                     r = await client.post(claim.target_url, **kwargs)
+                elif claim.injection_point.value == "URI_PATH":
+                    # NEW: Handle Struts2 S2-057 URI path injection
+                    from urllib.parse import quote
+                    encoded = quote(payload, safe="")
+                    url = claim.target_url.replace("{PAYLOAD}", encoded)
+                    r = await client.get(url, headers=headers)
                 else:
                     headers[claim.parameter_name or "X-Test"] = payload
                     r = await client.post(claim.target_url, headers=headers)
@@ -264,6 +271,12 @@ class C2LLMJudgeVerifier:
                 elif claim.injection_point.value == "JSON_FIELD":
                     kwargs = _json_field_request_kwargs(payload, claim.parameter_name, headers)
                     r = await client.post(claim.target_url, **kwargs)
+                elif claim.injection_point.value == "URI_PATH":
+                    # NEW: Handle Struts2 S2-057 URI path injection
+                    from urllib.parse import quote
+                    encoded = quote(payload, safe="")
+                    url = claim.target_url.replace("{PAYLOAD}", encoded)
+                    r = await client.get(url, headers=headers)
                 else:
                     headers[claim.parameter_name or "X-Test"] = payload
                     r = await client.post(claim.target_url, headers=headers)

@@ -212,7 +212,6 @@ class CanaryRCEOracle(BaseOracle):
                 )
 
             # Case 2: bare Groovy expression (Elasticsearch CVE-2015-1427).
-            # Wrap it in the JSON envelope the target expects.
             if _looks_like_groovy_script(stripped):
                 envelope = {
                     "size": 1,
@@ -235,6 +234,14 @@ class CanaryRCEOracle(BaseOracle):
 
         if claim.injection_point == InjectionPoint.HEADER:
             return await self._dispatch_header_via_curl(claim, canary_payload, headers)
+
+        if claim.injection_point == InjectionPoint.URI_PATH:
+            # NEW: Struts2 S2-057 style. Payload is embedded in the URI path.
+            # We URL-encode the payload so special chars survive path parsing.
+            from urllib.parse import quote
+            encoded = quote(canary_payload, safe="")
+            url = claim.target_url.replace("{PAYLOAD}", encoded)
+            return await client.get(url, headers=headers)
 
         raise ValueError(f"Unsupported injection point: {claim.injection_point}")
 
@@ -272,6 +279,15 @@ class CanaryRCEOracle(BaseOracle):
                     )
 
             body = self._normalize_response(response.text)
+            
+            # NEW: URI_PATH sinks (Struts2 S2-057) return the evaluated result
+            # in the Location header of a 302 redirect, not the body.
+            if claim.injection_point == InjectionPoint.URI_PATH:
+                location = ""
+                if hasattr(response, "headers"):
+                    location = response.headers.get("Location", "") or ""
+                body = self._normalize_response(body + "\n" + location)
+
             sum_match = re.search(r"\b" + re.escape(expected_str) + r"\b", body)
             echo_x = re.search(r"\b" + re.escape(str(val1)) + r"\b", body) is not None
             echo_y = re.search(r"\b" + re.escape(str(val2)) + r"\b", body) is not None
@@ -285,7 +301,7 @@ class CanaryRCEOracle(BaseOracle):
                     rejection_code="PROVEN_EXECUTION",
                     raw_observation=(
                         f"Canary proof evaluated on target CPU. "
-                        f"Expected {expected_str} found in response body."
+                        f"Expected {expected_str} found in response."
                     ),
                     recommended_action=RecommendedAction.PROCEED_POST_EXPLOIT,
                     mutated_canary=canary_id,
