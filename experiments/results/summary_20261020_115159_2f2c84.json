@@ -1,0 +1,102 @@
+[
+  {
+    "target": "struts2-s2057",
+    "condition": "C3",
+    "trial": 1,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 776,
+    "tokens_out": 286
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C3",
+    "trial": 2,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 776,
+    "tokens_out": 285
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C3",
+    "trial": 3,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 776,
+    "tokens_out": 287
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C3",
+    "trial": 4,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 776,
+    "tokens_out": 285
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C3",
+    "trial": 5,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 776,
+    "tokens_out": 288
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C3",
+    "trial": 6,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 776,
+    "tokens_out": 283
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C3",
+    "trial": 7,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 776,
+    "tokens_out": 289
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C3",
+    "trial": 8,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 776,
+    "tokens_out": 291
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C3",
+    "trial": 9,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 776,
+    "tokens_out": 277
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C3",
+    "trial": 10,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 776,
+    "tokens_out": 285
+  }
+]

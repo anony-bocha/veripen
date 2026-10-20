@@ -1,0 +1,102 @@
+[
+  {
+    "target": "struts2-s2057",
+    "condition": "C1",
+    "trial": 1,
+    "final_verdict": "INCONCLUSIVE",
+    "steps": 20,
+    "l_deg": 3,
+    "tokens_in": 30722,
+    "tokens_out": 5964
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C1",
+    "trial": 2,
+    "final_verdict": "INCONCLUSIVE",
+    "steps": 20,
+    "l_deg": 3,
+    "tokens_in": 31313,
+    "tokens_out": 6325
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C1",
+    "trial": 3,
+    "final_verdict": "INCONCLUSIVE",
+    "steps": 20,
+    "l_deg": 5,
+    "tokens_in": 27754,
+    "tokens_out": 5373
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C1",
+    "trial": 4,
+    "final_verdict": "INCONCLUSIVE",
+    "steps": 20,
+    "l_deg": 3,
+    "tokens_in": 29233,
+    "tokens_out": 5270
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C1",
+    "trial": 5,
+    "final_verdict": "INCONCLUSIVE",
+    "steps": 20,
+    "l_deg": 4,
+    "tokens_in": 30657,
+    "tokens_out": 6289
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C1",
+    "trial": 6,
+    "final_verdict": "INCONCLUSIVE",
+    "steps": 20,
+    "l_deg": 3,
+    "tokens_in": 28172,
+    "tokens_out": 5451
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C1",
+    "trial": 7,
+    "final_verdict": "INCONCLUSIVE",
+    "steps": 20,
+    "l_deg": 3,
+    "tokens_in": 28953,
+    "tokens_out": 5561
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C1",
+    "trial": 8,
+    "final_verdict": "INCONCLUSIVE",
+    "steps": 20,
+    "l_deg": 6,
+    "tokens_in": 28562,
+    "tokens_out": 5684
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C1",
+    "trial": 9,
+    "final_verdict": "INCONCLUSIVE",
+    "steps": 20,
+    "l_deg": 5,
+    "tokens_in": 29379,
+    "tokens_out": 5520
+  },
+  {
+    "target": "struts2-s2057",
+    "condition": "C1",
+    "trial": 10,
+    "final_verdict": "INCONCLUSIVE",
+    "steps": 20,
+    "l_deg": 4,
+    "tokens_in": 27586,
+    "tokens_out": 5160
+  }
+]
