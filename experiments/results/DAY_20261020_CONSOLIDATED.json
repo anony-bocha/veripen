@@ -1,0 +1,732 @@
+[
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C1",
+    "trial": 1,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 211
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C1",
+    "trial": 2,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 195
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C1",
+    "trial": 3,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 197
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C1",
+    "trial": 4,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 211
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C1",
+    "trial": 5,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 207
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C1",
+    "trial": 6,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 203
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C1",
+    "trial": 7,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 200
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C1",
+    "trial": 8,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 209
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C1",
+    "trial": 9,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 199
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C1",
+    "trial": 10,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 211
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C2",
+    "trial": 1,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 211
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C2",
+    "trial": 2,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 197
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C2",
+    "trial": 3,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 199
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C2",
+    "trial": 4,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 205
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C2",
+    "trial": 5,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 195
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C2",
+    "trial": 6,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 205
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C2",
+    "trial": 7,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 202
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C2",
+    "trial": 8,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 205
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C2",
+    "trial": 9,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 197
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C2",
+    "trial": 10,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 211
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C3",
+    "trial": 1,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 206
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C3",
+    "trial": 2,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 212
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C3",
+    "trial": 3,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 212
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C3",
+    "trial": 4,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 215
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C3",
+    "trial": 5,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 204
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C3",
+    "trial": 6,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 199
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C3",
+    "trial": 7,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 207
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C3",
+    "trial": 8,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 202
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C3",
+    "trial": 9,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 194
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C3",
+    "trial": 10,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 204
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C4",
+    "trial": 1,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 212
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C4",
+    "trial": 2,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 212
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C4",
+    "trial": 3,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 212
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C4",
+    "trial": 4,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 219
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C4",
+    "trial": 5,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 206
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C4",
+    "trial": 6,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 207
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C4",
+    "trial": 7,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 203
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C4",
+    "trial": 8,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 204
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C4",
+    "trial": 9,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 197
+  },
+  {
+    "target": "phpcgi-2012-1823",
+    "condition": "C4",
+    "trial": 10,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 701,
+    "tokens_out": 202
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C1",
+    "trial": 1,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 659
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C1",
+    "trial": 2,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 659
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C1",
+    "trial": 3,
+    "final_verdict": "VERIFIED",
+    "steps": 3,
+    "l_deg": 0,
+    "tokens_in": 3336,
+    "tokens_out": 1738
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C1",
+    "trial": 4,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 663
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C1",
+    "trial": 5,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 665
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C1",
+    "trial": 6,
+    "final_verdict": "VERIFIED",
+    "steps": 3,
+    "l_deg": 0,
+    "tokens_in": 3239,
+    "tokens_out": 1555
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C1",
+    "trial": 7,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 663
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C1",
+    "trial": 8,
+    "final_verdict": "VERIFIED",
+    "steps": 3,
+    "l_deg": 0,
+    "tokens_in": 3239,
+    "tokens_out": 1545
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C1",
+    "trial": 9,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 661
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C1",
+    "trial": 10,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 659
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C2",
+    "trial": 1,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 654
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C2",
+    "trial": 2,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 663
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C2",
+    "trial": 3,
+    "final_verdict": "VERIFIED",
+    "steps": 8,
+    "l_deg": 3,
+    "tokens_in": 14519,
+    "tokens_out": 4627
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C2",
+    "trial": 4,
+    "final_verdict": "VERIFIED",
+    "steps": 2,
+    "l_deg": 0,
+    "tokens_in": 2046,
+    "tokens_out": 1340
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C2",
+    "trial": 5,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 658
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C2",
+    "trial": 6,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 656
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C2",
+    "trial": 7,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 671
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C2",
+    "trial": 8,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 655
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C2",
+    "trial": 9,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 658
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C2",
+    "trial": 10,
+    "final_verdict": "VERIFIED",
+    "steps": 3,
+    "l_deg": 1,
+    "tokens_in": 3574,
+    "tokens_out": 2003
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C3",
+    "trial": 1,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 657
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C3",
+    "trial": 2,
+    "final_verdict": "VERIFIED",
+    "steps": 3,
+    "l_deg": 0,
+    "tokens_in": 3416,
+    "tokens_out": 1688
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C3",
+    "trial": 3,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 658
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C4",
+    "trial": 1,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 662
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C4",
+    "trial": 2,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 662
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C4",
+    "trial": 3,
+    "final_verdict": "VERIFIED",
+    "steps": 2,
+    "l_deg": 0,
+    "tokens_in": 2040,
+    "tokens_out": 1329
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C4",
+    "trial": 4,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 654
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C4",
+    "trial": 5,
+    "final_verdict": "VERIFIED",
+    "steps": 2,
+    "l_deg": 0,
+    "tokens_in": 2040,
+    "tokens_out": 1329
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C4",
+    "trial": 6,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 656
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C4",
+    "trial": 7,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 657
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C4",
+    "trial": 8,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 673
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C4",
+    "trial": 9,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 654
+  },
+  {
+    "target": "struts2-s2045",
+    "condition": "C4",
+    "trial": 10,
+    "final_verdict": "VERIFIED",
+    "steps": 1,
+    "l_deg": 0,
+    "tokens_in": 850,
+    "tokens_out": 671
+  }
+]
